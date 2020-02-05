@@ -1,31 +1,56 @@
-<nav class="navbar navbar-toggleable-md navbar-light bg-default">
+<link rel="stylesheet" href="navbar/navbar.css">
 
-	<a class="navbar-brand" href="#">Генератор билетов</a>
+<script type="text/x-template" id="navbar_template">
+	<nav class="navbar navbar-toggleable-sm navbar-light bg-default">
 
-	<!-- Collapse button -->
-	<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent"><span class="navbar-toggler-icon"></span></button>
+		<span class="navbar-brand static-navbar-brand">Генератор</span>
+		<div class="navbar-toggle-brand-wrapper">
+			<a class="navbar-brand navbar-toggle-brand navbar-brand-1"
+			   v-bind:style="brandQuestions"
+			   v-on:mouseover="toggleTo('questions')"
+			   v-on:mouseleave="toggleToActive()"
+			   v-on:click="saveActiveMode('questions')"
+			   href="index.shtml">билетов</a>
+
+			<a class="navbar-brand navbar-toggle-brand navbar-brand-2"
+			   v-bind:style="brandTests"
+			   v-on:mouseover="toggleTo('tests')"
+			   v-on:mouseleave="toggleToActive()"
+			   v-on:click="saveActiveMode('tests')"
+			href="tests.shtml">тестов</a>
+		</div>
+
+		<!-- Collapse button -->
+		<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent"><span class="navbar-toggler-icon"></span></button>
 
 
-	<!-- Collapsible content -->
-	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<!-- Collapsible content -->
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-		<!-- Links -->
-		<ul class="navbar-nav mr-auto">
-			<li class="nav-item">
-				<a class="nav-link" href="#">Мои предметы</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#" data-toggle="modal" data-target="#ModalGenerate" id="OpenGenerate">Сгенерировать билеты</a>
-			</li>
-		</ul>
-		<!-- Links -->
+			<!-- Links -->
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="#">Мои предметы</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#" data-toggle="modal" data-target="#ModalGenerate" id="OpenGenerate">Сгенерировать билеты</a>
+				</li>
+			</ul>
+			<!-- Links -->
 
-		<span class="navbar-text p-0">
-    		<span id='NavbarUserName'></span>
-		<button type="button" class="btn btn-sm btn-default Login" data-toggle="modal" data-target="#ModalLogin">Войти</button>
-		<button type="button" class="btn btn-sm btn-secondary Register" data-toggle="modal" data-target="#ModalRegister">Зарегистрироваться</button>
-		<button type="button" class="btn btn-sm btn-danger Unlogin" data-toggle="modal" data-target="#ModalUnlogin">Выйти</button>
-		</span>
-	</div>
-	<!-- Collapsible content -->
-</nav>
+			<span class="navbar-text p-0">
+				<template v-if="teacherInfo">
+					<span id='NavbarUserName'>{{teacherInfo.FIO}}</span>
+					<button type="button" class="btn btn-sm btn-danger Unlogin" data-toggle="modal" data-target="#ModalUnlogin">Выйти</button>
+				</template>
+				<template v-else>
+					<button type="button" class="btn btn-sm btn-default Login" data-toggle="modal" data-target="#ModalLogin">Войти</button>
+					<button type="button" class="btn btn-sm btn-secondary Register" data-toggle="modal" data-target="#ModalRegister">Зарегистрироваться</button>
+				</template>
+			</span>
+		</div>
+		<!-- Collapsible content -->
+	</nav>
+</script>
+
+<script src="navbar/navbar.js"></script>

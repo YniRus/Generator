@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Генератор билетов - Главная</title>
+
+    <link rel="stylesheet" href="../assets/tether/tether.css">
+    <link rel="stylesheet" href="../assets/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="../assets/mdb/mdb.css">
+    <link rel="stylesheet" href="../assets/font-awesome/font-awesome.css">
+    <link rel="stylesheet" href="../assets/snackBar/mSnackbar.css">
+
+    <link rel="stylesheet" href="content/content.css">
+    <script src="../assets/jQuery/jquery-3.2.1.js"></script>
+    <script src="../assets/jQuery/jquery.cookie.js"></script>
+    <script src="../assets/jQuery/jquery.json.min.js"></script>
+    <script src="../assets/vue/vue.js"></script>
+</head>
+
+<body>
+
+<!--#include file="navbar/navbar.html"-->
+<!--#include file="login-form/form.html"-->
+<!--#include file="register-form/form.html"-->
+<!--#include file="unlogin-form/form.html"-->
+
+<div id="mainVueApp">
+    <vue-navbar v-bind:teacher-info="teacherInfo"></vue-navbar>
+
+    <div class="container-fluid" id="main-container" v-if="teacherInfo">
+
+        <ol class="breadcrumb my-3">
+            <li id="bc-Subject" class="breadcrumb-item">Предметы</li>
+            <li id="bc-Theme" class="breadcrumb-item">Темы</li>
+            <li id="bc-Question" class="breadcrumb-item">Вопросы</li>
+        </ol>
+
+        <h2 class="table-headtext">{{tableHeadText}}</h2>
+
+        <div class="md-form form-sm mb-0">
+            <input type="text" id="Search" class="form-control" autocomplete="off">
+            <label for="Search" class="">Поиск</label>
+        </div>
+
+        <div class="text-center">
+            <a href="" class="btn btn-default btn-rounded mb-4" data-target="#ModalAdd">{{addButtonText}}</a>
+        </div>
+    </div>
+
+
+    <div id="preview" class="container text-center pt-5" v-else>
+        <h1 class="display-4">Система автоматизированной генерации тестовых заданий</h1>
+
+        <div class="spase-300px"></div>
+
+        <div class="text-right w-100 pt-5">
+            <p class="">
+                Выполнил:
+                <br> студент группы 14ВВ2
+                <br> Мачильский Владислав
+            </p>
+        </div>
+
+        <div class="text-center w-100 pt-5">
+            <p class="">
+                Пенза 2020
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<script src="../assets/tether/tether.js"></script>
+<script src="../assets/bootstrap/bootstrap.js"></script>
+<script src="../assets/mdb/mdb.js"></script>
+<script src="../assets/snackBar/mSnackbar.min.js"></script>
+
+<script src="vue-app.js"></script>
+
+<script src="register-form/register.js"></script>
+<script src="login-form/login.js"></script>
+<script src="unlogin-form/unlogin.js"></script>
+</body>
+
+</html>

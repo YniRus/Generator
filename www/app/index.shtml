@@ -13,6 +13,10 @@
 	<link rel="stylesheet" href="../assets/snackBar/mSnackbar.css">
 
 	<link rel="stylesheet" href="content/content.css">
+	<script src="../assets/jQuery/jquery-3.2.1.js"></script>
+	<script src="../assets/jQuery/jquery.cookie.js"></script>
+	<script src="../assets/jQuery/jquery.json.min.js"></script>
+	<script src="../assets/vue/vue.js"></script>
 </head>
 
 <body>
@@ -31,16 +35,12 @@
 
 	<!--#include file="generate/generate.html"-->
 
-	<script src="../assets/jQuery/jquery-3.2.1.js"></script>
-	<script src="../assets/jQuery/jquery.cookie.js"></script>
-	<script src="../assets/jQuery/jquery.json.min.js"></script>
 	<script src="../assets/tether/tether.js"></script>
 	<script src="../assets/bootstrap/bootstrap.js"></script>
 	<script src="../assets/mdb/mdb.js"></script>
 	<script src="../assets/snackBar/mSnackbar.min.js"></script>
-	<script src="../assets/vue/vue.js"></script>
 
-	<script src="app.js"></script>
+	<script src="vue-app.js"></script>
 
 	<script src="content/tables/table-create.js"></script>
 	<script src="content/tables/table-openSubtable.js"></script>

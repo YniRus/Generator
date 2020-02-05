@@ -9,7 +9,7 @@
 	<h2 class="table-headtext">Список ваших предметов</h2>
 
 	<div class="md-form form-sm mb-0">
-		<input type="text" id="Search" class="form-control">
+		<input type="text" id="Search" class="form-control" autocomplete="off">
 		<label for="Search" class="">Поиск</label>
 	</div>
 
@@ -44,7 +44,7 @@
 
 	<div class="text-center w-100 pt-5">
 		<p class="">
-			Пенза 2018
+			Пенза 2020
 		</p>
 	</div>
 
