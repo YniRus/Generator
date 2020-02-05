@@ -1,0 +1,28 @@
+body {
+	background-color: #E8E8E8 !important;
+}
+
+.breadcrumb-active {
+	color: #0088CC;
+	cursor: pointer;
+}
+
+.breadcrumb-active:hover {
+	color: #005580;
+}
+
+.modal-document-dialog {
+	width: auto;
+}
+
+#preview {}
+
+.spase-300px {
+	height: 300px;
+}
+
+#ShowDocumentModal img {
+	display: block;
+	width: 100%;
+	height: auto;
+}

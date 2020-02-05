@@ -1,0 +1,31 @@
+.List {
+
+	height: 297.127mm;
+	width: 210mm;
+	margin: auto;
+	padding: 10mm;
+	box-sizing: border-box;
+	border: 0.1mm solid #222;
+}
+
+.Card {
+	width: 100%;
+	padding: 5mm;
+	border: 0.5mm dashed #222;
+	box-sizing: border-box;
+	margin-bottom: 5mm;
+}
+
+.CardTitle {
+	font-size: 20pt;
+}
+
+.QuestionImage {
+	max-width: 170mm;
+}
+
+.Questions {}
+
+.QuestionText {}
+
+.QuestionsType {}
