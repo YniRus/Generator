@@ -17,7 +17,7 @@
 			   v-on:mouseover="toggleTo('tests')"
 			   v-on:mouseleave="toggleToActive()"
 			   v-on:click="saveActiveMode('tests')"
-			href="tests.shtml">тестов</a>
+			href="index.shtml">тестов</a>
 		</div>
 
 		<!-- Collapse button -->
@@ -27,16 +27,26 @@
 		<!-- Collapsible content -->
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-			<!-- Links -->
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					<a class="nav-link" href="#">Мои предметы</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#" data-toggle="modal" data-target="#ModalGenerate" id="OpenGenerate">Сгенерировать билеты</a>
-				</li>
+				<template v-if="teacherInfo">
+					<template v-if="activeMode === 'questions'">
+						<li class="nav-item">
+							<a class="nav-link" href="#">Мои предметы</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" data-toggle="modal" data-target="#ModalGenerate" id="OpenGenerate">Сгенерировать билеты</a>
+						</li>
+					</template>
+					<template v-else>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Мои тесты</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" data-toggle="modal" data-target="#ModalGenerateTest">Сгенерировать тест</a>
+						</li>
+					</template>
+				</template>
 			</ul>
-			<!-- Links -->
 
 			<span class="navbar-text p-0">
 				<template v-if="teacherInfo">

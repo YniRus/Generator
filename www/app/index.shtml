@@ -2,66 +2,86 @@
 <html lang="ru">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Генератор билетов - Главная</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Генератор билетов - Главная</title>
 
-	<link rel="stylesheet" href="../assets/tether/tether.css">
-	<link rel="stylesheet" href="../assets/bootstrap/bootstrap.css">
-	<link rel="stylesheet" href="../assets/mdb/mdb.css">
-	<link rel="stylesheet" href="../assets/font-awesome/font-awesome.css">
-	<link rel="stylesheet" href="../assets/snackBar/mSnackbar.css">
+    <link rel="stylesheet" href="../assets/tether/tether.css">
+    <link rel="stylesheet" href="../assets/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="../assets/mdb/mdb.css">
+    <link rel="stylesheet" href="../assets/font-awesome/font-awesome.css">
+    <link rel="stylesheet" href="../assets/snackBar/mSnackbar.css">
 
-	<link rel="stylesheet" href="content/content.css">
-	<script src="../assets/jQuery/jquery-3.2.1.js"></script>
-	<script src="../assets/jQuery/jquery.cookie.js"></script>
-	<script src="../assets/jQuery/jquery.json.min.js"></script>
-	<script src="../assets/vue/vue.js"></script>
+    <link rel="stylesheet" href="content/content.css">
+    <script src="../assets/jQuery/jquery-3.2.1.js"></script>
+    <script src="../assets/jQuery/jquery.cookie.js"></script>
+    <script src="../assets/jQuery/jquery.json.min.js"></script>
+    <script src="../assets/vue/vue.js"></script>
+    <script> Vue.prototype.$eventBus = new Vue(); // Global event bus </script>
 </head>
 
 <body>
 
-	<!--#include file="navbar/navbar.html"-->
+<!--#include file="navbar/navbar.html"-->
+<!--#include file="login-form/form.html"-->
+<!--#include file="register-form/form.html"-->
+<!--#include file="unlogin-form/form.html"-->
 
-	<!--#include file="content/content.shtml"-->
+<div id="mainVueApp">
+    <vue-navbar v-bind:teacher-info="teacherInfo"></vue-navbar>
+    <login-form></login-form>
+    <unlogin-form></unlogin-form>
+    <register-form></register-form>
 
-	<!--#include file="modal-add/modal-add.html"-->
-	<!--#include file="modal-update/modal-update.html"-->
-	<!--#include file="modal-delete/modal-delete.html"-->
+    <div class="container-fluid" id="main-container" v-if="teacherInfo">
 
-	<!--#include file="login-form/form.html"-->
-	<!--#include file="register-form/form.html"-->
-	<!--#include file="unlogin-form/form.html"-->
+        <ol class="breadcrumb my-3">
+            <li id="bc-Subject" class="breadcrumb-item">Предметы</li>
+            <li id="bc-Theme" class="breadcrumb-item">Темы</li>
+            <li id="bc-Question" class="breadcrumb-item">Вопросы</li>
+        </ol>
 
-	<!--#include file="generate/generate.html"-->
+        <h2 class="table-headtext">{{tableHeadText}}</h2>
 
-	<script src="../assets/tether/tether.js"></script>
-	<script src="../assets/bootstrap/bootstrap.js"></script>
-	<script src="../assets/mdb/mdb.js"></script>
-	<script src="../assets/snackBar/mSnackbar.min.js"></script>
+        <div class="md-form form-sm mb-0">
+            <input type="text" id="Search" class="form-control" autocomplete="off">
+            <label for="Search" class="">Поиск</label>
+        </div>
 
-	<script src="vue-app.js"></script>
+        <div class="text-center">
+            <a href="" class="btn btn-default btn-rounded mb-4" data-target="#ModalAdd">{{addButtonText}}</a>
+        </div>
+    </div>
 
-	<script src="content/tables/table-create.js"></script>
-	<script src="content/tables/table-openSubtable.js"></script>
-	<script src="content/tables/table-returnUp.js"></script>
-	<script src="content/tables/table-search.js"></script>
-	<script src="content/tables/table-sortBy.js"></script>
-	<script src="content/tables/table-showDocument.js"></script>
 
-	<script src="modal-add/modal-add.js"></script>
-	<script src="modal-delete/modal-delete.js"></script>
-	<script src="modal-update/modal-update.js"></script>
+    <div id="preview" class="container text-center pt-5" v-else>
+        <h1 class="display-4">Система автоматизированной генерации экзаменационных билетов и тестовых заданий</h1>
 
-	<script src="content/tables/table-question/modal-update-type/update-type.js"></script>
-	<script src="content/tables/table-question/modal-add-document/add-document.js"></script>
-	<script src="content/tables/table-question/modal-add-document/delete-document.js"></script>
+        <div class="spase-300px"></div>
 
-	<script src="register-form/register.js"></script>
-	<script src="login-form/login.js"></script>
-	<script src="unlogin-form/unlogin.js"></script>
+        <div class="text-right w-100 pt-5">
+            <p class="">
+                Выполнил:
+                <br> студент группы 14ВВ2
+                <br> Мачильский Владислав
+            </p>
+        </div>
 
-	<script src="generate/generate.js"></script>
+        <div class="text-center w-100 pt-5">
+            <p class="">
+                Пенза 2020
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<script src="../assets/tether/tether.js"></script>
+<script src="../assets/bootstrap/bootstrap.js"></script>
+<script src="../assets/mdb/mdb.js"></script>
+<script src="../assets/snackBar/mSnackbar.min.js"></script>
+
+<script src="vue-app.js"></script>
 </body>
 
 </html>

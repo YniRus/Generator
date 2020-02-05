@@ -1,5 +1,3 @@
-Vue.prototype.$eventBus = new Vue(); // Global event bus
-
 class EntityTranslator {
 
 	static getTableHeadText (entityAlias) {
@@ -44,16 +42,28 @@ let MainVueApp = new Vue({
 		},
 		addButtonText : function () {
 			return EntityTranslator.getAddButtonText(this.activeTable);
+		},
+		teacherId : function () {
+			return this.teacherInfo ? this.teacherInfo['ID_Teacher'] : null;
 		}
 	},
 	methods : {
-		setTeacherInfo : function () {
+		initTeacherInfo : function () {
 			TeacherInfo = $.cookie('TeacherInfo');
 			this.teacherInfo = JSON.parse(TeacherInfo);
+		},
+		setTeacherInfo : function (teacherInfo) {
+			this.teacherInfo = teacherInfo;
+			// $.get("content/tables/table-subject/GetSubjectsInfo.php", {
+			// 	OrderBy: "ID",
+			// 	Desc: 0,
+			// 	WhereID: TeacherID
+			// }, CreateTable);
 		}
 	},
 	mounted: function () {
-		this.setTeacherInfo();
+		this.initTeacherInfo();
+		this.$eventBus.$on('update-teacher-info',this.setTeacherInfo);
 	}
 });
 

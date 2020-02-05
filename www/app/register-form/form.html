@@ -1,48 +1,64 @@
-<div class="modal fade" id="ModalRegister" role="dialog">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
+<script type="text/x-template" id="register_form_template">
+	<div class="modal hide fade" id="ModalRegister" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
 
-			<div class="modal-header text-center">
-				<h4 class="modal-title w-100 font-bold">Регистрация</h4>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-                </button>
-			</div>
-
-			<div class="modal-body">
-
-
-				<label>Университет</label>
-				<div class="md-form">
-					<select class="form-control mb-0" id="RegisterForm-University"> </select>
+				<div class="modal-header text-center">
+					<h4 class="modal-title w-100 font-bold">Регистрация</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
 				</div>
 
-				<label>Факультет</label>
-				<div class="md-form">
-					<select class="form-control mb-0" id="RegisterForm-Department"> </select>
-				</div>
+				<div class="modal-body">
 
-				<div class="md-form">
-					<i class="fa fa-address-card prefix grey-text"></i>
-					<input type="text" id="RegisterForm-FIO" class="form-control">
-					<label for="defaultForm-email">ФИО</label>
-				</div>
 
-				<div class="md-form">
-					<i class="fa fa-user prefix grey-text"></i>
-					<input type="text" id="RegisterForm-Login" class="form-control">
-					<label for="defaultForm-email">Придумайте логин</label>
-				</div>
+					<label>Университет</label>
+					<div class="md-form">
+						<select class="form-control mb-0" v-model="university">
+							<option
+									v-for="option in universitiesList"
+									v-bind:value="option.value">
+								{{option.text}}
+							</option>
+						</select>
+					</div>
 
-				<div class="md-form">
-					<i class="fa fa-lock prefix grey-text"></i>
-					<input type="password" id="RegisterForm-Password" class="form-control">
-					<label for="defaultForm-pass">Придумайте пароль</label>
+					<label>Факультет</label>
+					<div class="md-form">
+						<select class="form-control mb-0" v-model="department">
+							<option
+									v-for="option in departmentsList"
+									v-bind:value="option.value">
+								{{option.text}}
+							</option>
+						</select>
+					</div>
+
+					<div class="md-form">
+						<i class="fa fa-address-card prefix grey-text"></i>
+						<input type="text" v-model="fio" class="form-control">
+						<label for="defaultForm-email">ФИО</label>
+					</div>
+
+					<div class="md-form">
+						<i class="fa fa-user prefix grey-text"></i>
+						<input type="text" v-model="login" class="form-control">
+						<label for="defaultForm-email">Придумайте логин</label>
+					</div>
+
+					<div class="md-form">
+						<i class="fa fa-lock prefix grey-text"></i>
+						<input type="password" v-model="password" class="form-control">
+						<label for="defaultForm-pass">Придумайте пароль</label>
+					</div>
 				</div>
-			</div>
-			<div class="modal-footer d-flex justify-content-center">
-				<button class="btn btn-default" id="SubmitRegister" data-dismiss="modal" type="submit">Зарегистрироваться</button>
+				<div class="modal-footer d-flex justify-content-center">
+					<button class="btn btn-default" v-on:click.prevent="submitRegister" data-dismiss="modal" type="submit">Зарегистрироваться</button>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</script>
+
+<script src="register-form/register.js"></script>
