@@ -1,55 +1,84 @@
-function onOpenAdd() {
-
-}
-
-$('#SubmitAdd').click(function () {
-	var WhereID;
-	if (Table == "Subject") {
-		WhereID = TeacherID;
-	}
-	if (Table == "Theme") {
-		WhereID = SubjectID;
-	}
-	if (Table == "Question") {
-		WhereID = ThemeID;
-	}
-
-	var Name = $("#ModalNameAdd").val();
-	if (Name != "") {
-		$("#AddName").val("");
-		if (Table == "Question") {
-			$.get("modal-add/AddQuestion.php", {
-				SubjectID: SubjectID,
-				ThemeID: ThemeID,
-				Type: "Теоретический",
-				Name: Name,
-				Document: null
-			}, onAdd);
-		} else {
-			$.get("modal-add/Add" + Table + ".php", {
-				ID: WhereID,
-				Name: Name
-			}, onAdd);
+Vue.component('modal-add', {
+	template: '#modal_add_template',
+	data : function() {
+		return {
+			table : null,
+			parentId : null,
+			title : null,
+			// Добавление вопроса
+			questionType : null,
+			questionTypes : []
+		};
+	},
+	props : [],
+	computed : {
+		addMethodPath : function () {
+			switch (this.table) {
+				case 'subject' : return "modal-add/AddSubject.php";
+				case 'theme' : return "modal-add/AddTheme.php";
+				case 'question' : return "modal-add/AddQuestion.php";
+				default : return null;
+			}
 		}
-	} else {
-		$.mSnackbar('Введите название');
+	},
+	methods : {
+		listeners : function() {
+			this.$eventBus.$on('show-modal-add',this.show);
+		},
+		show : function ({table = null, parentId = null}) {
+			this.table = table;
+			this.parentId = parentId;
+			$(this.$el).modal('show');
+
+			if(this.table === 'question') {
+				this.getQuestionTypes();
+			}
+		},
+		getData : function() {
+			switch (this.table) {
+				case 'subject' : return {
+					parentId : this.parentId,
+					title : this.title
+				};
+				case 'theme' : return {
+					parentId : this.parentId,
+					title : this.title
+				};
+				case 'question' : return {
+					parentId : this.parentId,
+					title : this.title,
+					type : this.questionType,
+					document : null
+				};
+				default : return {};
+			}
+		},
+		getQuestionTypes : async function() {
+			let activeMode = $.cookie('activeMode');
+			let forTests = activeMode === 'questions' ? 0 : 1;
+			try {
+				let result = await $.get("content/tables/table-question/GetQuestionTypesInfo.php", {
+					forTests : forTests
+				});
+				this.questionTypes = JSON.parse(result);
+				this.questionType = this.questionTypes[0].Name;
+			} catch (e) {
+				this.questionTypes = [];
+			}
+		},
+		submit : async function () {
+			try {
+				let result = await $.get(this.addMethodPath, this.getData());
+				result = JSON.parse(result);
+				if(result) {
+					this.$eventBus.$emit('add-item-complete');
+				}
+			} catch (e) {
+				$.mSnackbar('Ошибка добавления записи');
+			}
+		}
+	},
+	mounted : function () {
+		this.listeners();
 	}
 });
-
-function onAdd(data) {
-	var Data = JSON.parse(data);
-	if (Table == "Question") {
-		var ID = Data[0][0];
-		var Type = Data[0][1];
-		var Name = Data[0][2];
-		var Document = Data[0][3];
-		Row(ID, Name, Type, Document);
-
-	} else {
-		var ID = Data[0][0];
-		var Name = Data[0][1];
-		Row(ID, Name, 0, 0);
-	}
-	$.mSnackbar('Запись добавлена');
-	$("#ModalNameAdd").val(null).blur();
-}

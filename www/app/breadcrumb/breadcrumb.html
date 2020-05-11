@@ -1,0 +1,23 @@
+<script type="text/x-template" id="breadcrumb_template">
+    <ol class="breadcrumb my-3">
+        <li id="bc-Subject" class="breadcrumb-item" v-if="activeTable === 'subject' || activeTable === 'theme' || activeTable === 'question'">
+            <template v-if="activeTable === 'theme' || activeTable === 'question'">
+                <a class="font-weight-normal" v-on:click.prepend="upTo('subject')">Предметы</a>
+            </template>
+            <template v-else>
+                Предметы
+            </template>
+        </li>
+        <li id="bc-Theme" class="breadcrumb-item" v-if="activeTable === 'theme' || activeTable === 'question'">
+            <template v-if="activeTable === 'question'">
+                <a class="font-weight-normal" v-on:click.prepend="upTo('theme')">Темы</a>
+            </template>
+            <template v-else>
+                Темы
+            </template>
+        </li>
+        <li id="bc-Question" class="breadcrumb-item" v-if="activeTable === 'question'">Вопросы</li>
+    </ol>
+</script>
+
+<script src="breadcrumb/breadcrumb.js"></script>

@@ -1,20 +1,69 @@
-function onOpenDelete(e) {
-	var Element = e.target;
-	var Name = $(Element).closest("tr").find(".Name");
-	var ID = Name.attr('id').split("-");
-	SelectedID = Number(ID[1]);
-	$("#ModalNameDelete").text(Name.text());
-}
-
-$('#SubmitDelete').click(function () {
-	$.get("modal-delete/Delete" + Table + ".php", {
-		ID: SelectedID,
-	}, onDelete);
+Vue.component('modal-delete', {
+	template: '#modal_delete_template',
+	data : function() {
+		return {
+			'table' : null,
+			'item' : null
+		};
+	},
+	computed : {
+		deleteMethodPath : function () {
+			switch (this.table) {
+				case 'subject' : return "modal-delete/DeleteSubject.php";
+				case 'theme' : return "modal-delete/DeleteTheme.php";
+				case 'question' : return "modal-delete/DeleteQuestion.php";
+				default : return null;
+			}
+		},
+		itemId : function () {
+			try {
+				switch (this.table) {
+					case 'subject' : return  this.item.ID_Subject;
+					case 'theme' : return this.item.ID_Theme;
+					case 'question' : return this.item.ID_Question;
+					default : return null;
+				}
+			} catch (e) {
+				return null;
+			}
+		},
+		itemName : function () {
+			try {
+				switch (this.table) {
+					case 'subject' : return this.item.SubjectName;
+					case 'theme' : return this.item.ThemeName;
+					case 'question' : return this.item.Name;
+					default : return null;
+				}
+			} catch (e) {
+				return null;
+			}
+		}
+	},
+	methods : {
+		listeners : function() {
+			this.$eventBus.$on('show-modal-delete',this.show);
+		},
+		show : function ({table = null, item = null}) {
+			this.table = table;
+			this.item = item;
+			$(this.$el).modal('show');
+		},
+		submit : async function () {
+			try {
+				let result = await $.get(this.deleteMethodPath, {
+					ID : this.itemId
+				});
+				result = JSON.parse(result);
+				if(result.ID) {
+					this.$eventBus.$emit('delete-item-complete');
+				}
+			} catch (e) {
+				$.mSnackbar('Ошибка удаления записи');
+			}
+		}
+	},
+	mounted : function () {
+		this.listeners();
+	}
 });
-
-function onDelete(data) {
-	var Data = JSON.parse(data);
-	var ID = Data[0][0];
-	$("#Row-" + ID).remove();
-	$.mSnackbar('Запись удалена');
-}

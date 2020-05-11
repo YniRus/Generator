@@ -1,10 +1,19 @@
 <?php  
 require_once '../../../MySQL_Connect.php';
 
-$query = "CALL GetSubjectsInfo('$_GET[OrderBy]','$_GET[Desc]','$_GET[WhereID]')";
+$orderBy = $_GET['OrderBy'];
+$order = $_GET['Order'];
+$id = $_GET['WhereID'];
 
-$results = $db->query($query);
-$data = $results->fetch_all();
+$query = "SELECT
+   `subject`.`ID_Subject`,
+   `subject`.`Name` AS SubjectName,
+   (SELECT COUNT(*) FROM `theme` WHERE `theme`.`ID_Subject` = `subject`.`ID_Subject`) AS CountTheme,
+   (SELECT COUNT(*) FROM `question` WHERE `question`.`ID_Subject` = `subject`.`ID_Subject`) AS CountQuestion
+   FROM `subject`
+   WHERE `subject`.`ID_Teacher` = {$id}
+   ORDER BY {$orderBy} {$order}";
+
+$data = R::getAll($query);
 
 echo json_encode($data);
-?>

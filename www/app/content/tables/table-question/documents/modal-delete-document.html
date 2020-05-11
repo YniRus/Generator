@@ -1,0 +1,33 @@
+<script type="text/x-template" id="modal_delete_question_document">
+    <div class="modal fade" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Удаление документа</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="md-form mb-0">
+
+                        <span>Вы собираетесь удалить документ для следующего вопроса:</span>
+                        <h4 class="mt-2"><i class="fa fa-trash-o"></i>
+                            <b v-if="item">{{item.Name}}</b>
+                        </h4>
+                        <span>Все уверены?</span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" v-on:click="submit" data-dismiss="modal">Подтвердить</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script src="content/tables/table-question/documents/delete-document.js"></script>

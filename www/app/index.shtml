@@ -23,9 +23,23 @@
 <body>
 
 <!--#include file="navbar/navbar.html"-->
+<!--#include file="breadcrumb/breadcrumb.html"-->
+
 <!--#include file="login-form/form.html"-->
 <!--#include file="register-form/form.html"-->
 <!--#include file="unlogin-form/form.html"-->
+
+<!--#include file="content/tables/table-subject/table-subject.html"-->
+<!--#include file="content/tables/table-theme/table-theme.html"-->
+<!--#include file="content/tables/table-question/table-question.html"-->
+
+<!--#include file="content/tables/table-question/update-type/update-type.html"-->
+<!--#include file="content/tables/table-question/documents/modal-add-document.html"-->
+<!--#include file="content/tables/table-question/documents/modal-delete-document.html"-->
+
+<!--#include file="modal-add/modal-add.html"-->
+<!--#include file="modal-delete/modal-delete.html"-->
+<!--#include file="modal-update/modal-update.html"-->
 
 <div id="mainVueApp">
     <vue-navbar v-bind:teacher-info="teacherInfo"></vue-navbar>
@@ -35,24 +49,20 @@
 
     <div class="container-fluid" id="main-container" v-if="teacherInfo">
 
-        <ol class="breadcrumb my-3">
-            <li id="bc-Subject" class="breadcrumb-item">Предметы</li>
-            <li id="bc-Theme" class="breadcrumb-item">Темы</li>
-            <li id="bc-Question" class="breadcrumb-item">Вопросы</li>
-        </ol>
+        <vue-breadcrumb v-bind:parent="parent" v-bind:active-table="activeTable"></vue-breadcrumb>
 
-        <h2 class="table-headtext">{{tableHeadText}}</h2>
+        <table-subject v-show="activeTable === 'subject'" v-bind:parent="parent"></table-subject>
+        <table-theme v-show="activeTable === 'theme'" v-bind:parent="parent"></table-theme>
+        <table-question v-show="activeTable === 'question'" v-bind:parent="parent"></table-question>
 
-        <div class="md-form form-sm mb-0">
-            <input type="text" id="Search" class="form-control" autocomplete="off">
-            <label for="Search" class="">Поиск</label>
-        </div>
+        <modal-add></modal-add>
+        <modal-delete></modal-delete>
+        <modal-edit></modal-edit>
 
-        <div class="text-center">
-            <a href="" class="btn btn-default btn-rounded mb-4" data-target="#ModalAdd">{{addButtonText}}</a>
-        </div>
+        <modal-edit-question-type></modal-edit-question-type>
+        <modal-add-question-document></modal-add-question-document>
+        <modal-delete-question-document></modal-delete-question-document>
     </div>
-
 
     <div id="preview" class="container text-center pt-5" v-else>
         <h1 class="display-4">Система автоматизированной генерации экзаменационных билетов и тестовых заданий</h1>

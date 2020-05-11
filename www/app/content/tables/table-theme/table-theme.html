@@ -1,26 +1,43 @@
-<table class="table table-bordered table-hover d-none" id="Table-Theme">
-	<thead>
-		<tr>
-			<th># <a href="#" class="float-right"> <i class="fa fa-sort SortBy" id="SortBy-ID" aria-hidden="true"></i> </a></th>
-			<th>Название <a href="#" class="float-right"> <i class="fa fa-sort SortBy" id="SortBy-Name" aria-hidden="true"></i> </a> </th>
-			<th>Список вопросов <a href="#" class="float-right"> <i class="fa fa-sort SortBy" id="SortBy-CountQuestion" aria-hidden="true"></i> </a> </th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr class="TemplateTheme d-none" id="Row">
-			<th scope="row"> 0 </th>
-			<td>
-				<span class="Name" id="Name..."></span>
+<script type="text/x-template" id="table_theme_template">
+	<div class="table-wrapper">
+		<h2 class="table-headtext">Список ваших тем <template v-if="parent.data && parent.data.SubjectName">по предмету {{parent.data.SubjectName}}</template></h2>
 
-				<div class="d-inline-block float-right">
-					<a href="#" class="mr-3 OpenUpdate" data-toggle="modal" data-target="#ModalUpdate"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-					<a href="#" class="OpenDelete" data-toggle="modal" data-target="#ModalDelete"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-				</div>
-			</td>
-			<td>
-				<span class="CountQuestion" id="CountQuestion-???"></span>
-				<a href="#" class="float-right ShowTable" id="ShowTable-Question"> <i class="fa fa-eye" aria-hidden="true"></i> </a>
-			</td>
-		</tr>
-	</tbody>
-</table>
+		<div class="md-form form-sm mb-0">
+			<input type="text" v-model="searchString" class="form-control" autocomplete="off">
+			<label class="">Поиск</label>
+		</div>
+
+		<table class="table table-bordered table-hover" id="Table-Subject">
+			<thead>
+			<tr>
+				<th># <a href="#" class="float-right" v-on:click.prevent="sort('ID_Theme')" > <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
+				<th>Название <a href="#" class="float-right" v-on:click.prevent="sort('Name')"> <i class="fa fa-sort" aria-hidden="true"></i> </a> </th>
+				<th>Список вопросов <a href="#" class="float-right" v-on:click.prevent="sort('CountQuestion')"> <i class="fa fa-sort" aria-hidden="true"></i> </a> </th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr v-for="theme in themes"  v-if="!theme.Hide" class="Theme">
+				<th scope="row">{{theme.ID_Theme}}</th>
+				<td>
+					<span class="Name">{{theme.ThemeName}}</span>
+
+					<div class="d-inline-block float-right">
+						<a href="#" class="mr-3 OpenUpdate" data-toggle="modal" v-on:click="editItem(theme)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+						<a href="#" class="OpenDelete" data-toggle="modal" v-on:click="deleteItem(theme)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+					</div>
+				</td>
+				<td>
+					<span class="CountQuestion">{{theme.CountQuestion}}</span>
+					<a href="#" class="float-right" v-on:click.prevent="subtable('question',theme)"> <i class="fa fa-eye" aria-hidden="true"></i> </a>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+
+		<div class="text-center">
+			<a v-on:click.prepend="addItem" class="btn btn-default btn-rounded mb-4" data-target="#ModalAdd">Новая тема</a>
+		</div>
+	</div>
+</script>
+
+<script src="content/tables/table-theme/table_theme.js"></script>
