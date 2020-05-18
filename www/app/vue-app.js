@@ -7,8 +7,9 @@ let MainVueApp = new Vue({
 	data : {
 		teacherInfo : {},
 		activeTable : null,
-		orderBy : 'ID_Subject',
-		order: 'ASC',
+		activeMode : null,
+		orderBy : null,
+		order: null,
 		parent : {}
 	},
 	watch : {
@@ -49,6 +50,13 @@ let MainVueApp = new Vue({
 			TeacherInfo = $.cookie('TeacherInfo');
 			this.setTeacherInfo(JSON.parse(TeacherInfo));
 		},
+		initActiveMode : function() {
+			let activeMode = $.cookie('activeMode');
+			if(['questions','tests'].indexOf(activeMode) !== -1) {
+				this.activeMode = activeMode;
+			}
+			this.activeMode = this.activeMode ? this.activeMode : 'questions';
+		},
 		setTeacherInfo : function (teacherInfo) {
 			this.teacherInfo = teacherInfo;
 			if(this.teacherId !== null) {
@@ -87,20 +95,23 @@ let MainVueApp = new Vue({
 			this.$eventBus.$emit('get-themes-info', {
 				OrderBy: this.orderBy,
 				Order: this.order,
-				WhereID: this.parent.id
+				WhereID: this.parent.id,
+				CountForTests : this.activeMode === 'tests' ? 1 : 0
 			})
 		},
 		getQuestionsInfo : function() {
 			this.$eventBus.$emit('get-questions-info', {
 				OrderBy: this.orderBy,
 				Order: this.order,
-				WhereID: this.parent.id
+				WhereID: this.parent.id,
+				ForTests : this.activeMode === 'tests' ? 1 : 0
 			})
 		},
 	},
 	mounted: function () {
 		this.listeners();
 		this.initTeacherInfo();
+		this.initActiveMode();
 	}
 });
 

@@ -25,6 +25,8 @@
 <!--#include file="navbar/navbar.html"-->
 <!--#include file="breadcrumb/breadcrumb.html"-->
 
+<!--#include file="generate-cards/generate.html"-->
+
 <!--#include file="login-form/form.html"-->
 <!--#include file="register-form/form.html"-->
 <!--#include file="unlogin-form/form.html"-->
@@ -46,6 +48,8 @@
     <login-form></login-form>
     <unlogin-form></unlogin-form>
     <register-form></register-form>
+
+    <generate-cards-form v-bind:teacher="teacherInfo"></generate-cards-form>
 
     <div class="container-fluid" id="main-container" v-if="teacherInfo">
 

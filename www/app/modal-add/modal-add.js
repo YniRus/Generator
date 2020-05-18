@@ -67,6 +67,15 @@ Vue.component('modal-add', {
 			}
 		},
 		submit : async function () {
+			if(!this.title) {
+				$.mSnackbar('Введите название');
+				return ;
+			}
+			if(this.questionTypes  && !this.questionType) {
+				// Загружены типы вопросов, но не выбран тип вопроса. Ошибка
+				$.mSnackbar('Выберите тип вопроса');
+				return ;
+			}
 			try {
 				let result = await $.get(this.addMethodPath, this.getData());
 				result = JSON.parse(result);

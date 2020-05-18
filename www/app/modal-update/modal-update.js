@@ -61,6 +61,10 @@ Vue.component('modal-edit', {
 			});
 		},
 		submit : async function () {
+			if(!this.newName) {
+				$.mSnackbar('Введите название');
+				return false;
+			}
 			try {
 				let result = await $.get(this.editMethodPath, {
 					ID : this.itemId,

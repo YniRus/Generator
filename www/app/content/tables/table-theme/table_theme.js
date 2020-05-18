@@ -16,12 +16,13 @@ Vue.component('table-theme', {
         listeners : function() {
             this.$eventBus.$on('get-themes-info',this.getThemesInfo);
         },
-        getThemesInfo : async function ({OrderBy = 'ID_Theme', Order = 'ASC', WhereID = '*'}) {
+        getThemesInfo : async function ({OrderBy = 'ID_Theme', Order = 'ASC', WhereID = '*', CountForTests = '0'}) {
             try {
                 let themes = await $.get("content/tables/table-theme/GetThemesInfo.php", {
                     OrderBy: OrderBy,
                     Order: Order,
-                    WhereID: WhereID
+                    WhereID: WhereID,
+                    CountForTests : CountForTests
                 });
 
                 themes = JSON.parse(themes);

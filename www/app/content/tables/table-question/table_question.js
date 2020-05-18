@@ -17,12 +17,13 @@ Vue.component('table-question', {
         listeners : function() {
             this.$eventBus.$on('get-questions-info',this.getQuestionsInfo);
         },
-        getQuestionsInfo : async function ({OrderBy = 'ID_Question', Order = 'ASC', WhereID = '*'}) {
+        getQuestionsInfo : async function ({OrderBy = 'ID_Question', Order = 'ASC', WhereID = '*', ForTests = '0'}) {
             try {
                 let questions = await $.get("content/tables/table-question/GetQuestionsInfo.php", {
                     OrderBy: OrderBy,
                     Order: Order,
-                    WhereID: WhereID
+                    WhereID: WhereID,
+                    ForTests : ForTests
                 });
 
                 questions = JSON.parse(questions);
