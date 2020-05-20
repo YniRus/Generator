@@ -4,10 +4,15 @@ Vue.component('table-question', {
         return {
             questions : [],
             searchString : '',
-            document : null
+            document : null // Документ для показа в модальном окне
         };
     },
     props : ['parent'],
+    computed : {
+        activeMode : function () {
+            return this.$eventBus.activeMode;
+        }
+    },
     watch : {
         searchString : function (val) {
             this.search(val);
@@ -34,8 +39,7 @@ Vue.component('table-question', {
             }
         },
         getQuestionTypes : async function() {
-            let activeMode = $.cookie('activeMode');
-            let forTests = activeMode === 'questions' ? 0 : 1;
+            let forTests = this.activeMode === 'tests' ? 1 : 0;
             try {
                 let result = await $.get("content/tables/table-question/GetQuestionTypesInfo.php", {
                     forTests : forTests
@@ -58,9 +62,16 @@ Vue.component('table-question', {
             });
         },
         editType : function(item) {
+            if(this.activeMode === 'tests') {
+                $.mSnackbar('Для тестовых вопросов изменить тип нельзя. Удалите и добавьте заново');
+                return;
+            }
             this.$eventBus.$emit('show-modal-edit-question-type',{
                 item : item
             });
+        },
+        editAnswers : function(question) {
+            this.$eventBus.$emit('show-answer-editor-form',question);
         },
         deleteItem : function (item) {
             this.$eventBus.$emit('show-modal-delete',{

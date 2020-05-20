@@ -30,6 +30,7 @@
 				<td>
 					<span class="Type">{{question.Type}}</span>
 					<a href="#" class="float-right" v-on:click="editType(question)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+					<a href="#" class="float-right mr-3" v-if="question.Answers && activeMode == 'tests'" v-on:click="editAnswers(question)"> <i class="fa fa-list" aria-hidden="true"></i></a>
 				</td>
 				<td>
 					<a href="#" class="float-left" v-if="question.Document" v-on:click="showDocument(question)"> <i class="fa fa-eye" aria-hidden="true"></i> Посмотреть </a>
@@ -56,6 +57,8 @@
 				</div>
 			</div>
 		</div>
+
+		<answer-editor-form v-if="activeMode === 'tests'"></answer-editor-form>
 
 	</div>
 </script>

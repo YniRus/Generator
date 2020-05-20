@@ -1,0 +1,18 @@
+<script type="text/x-template" id="answer_editor_choice_template">
+    <div class="answer-editor">
+        <div class="md-form form-sm">
+            <label> Текст вопроса </label>
+            <input v-model="answer.text" class="form-control form-control-sm" type="text">
+        </div>
+        <hr>
+        <div class="answer-list">
+            <div class="answer md-form form-sm" v-for="option in answer.options">
+                <input v-model="option.correct" v-bind:disabled="!option.text" type="checkbox" class="prefix form-control" title="Правильный ответ">
+                <input v-model="option.text" v-on:input="optionEdited" class="form-control form-control-sm" type="text">
+                <label> Ответ </label>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script src="content/tables/table-question/answer-editor/editors/choice/choice.js"></script>

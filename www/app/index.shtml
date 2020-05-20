@@ -17,7 +17,7 @@
     <script src="../assets/jQuery/jquery.cookie.js"></script>
     <script src="../assets/jQuery/jquery.json.min.js"></script>
     <script src="../assets/vue/vue.js"></script>
-    <script> Vue.prototype.$eventBus = new Vue(); // Global event bus </script>
+    <script src="vue-event-bus.js"> </script>
 </head>
 
 <body>
@@ -30,6 +30,8 @@
 <!--#include file="login-form/form.html"-->
 <!--#include file="register-form/form.html"-->
 <!--#include file="unlogin-form/form.html"-->
+
+<!--#include file="content/tables/table-question/answer-editor/answer-editor.shtml"-->
 
 <!--#include file="content/tables/table-subject/table-subject.html"-->
 <!--#include file="content/tables/table-theme/table-theme.html"-->

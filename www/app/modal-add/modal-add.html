@@ -24,11 +24,20 @@
 								</option>
 							</select>
 						</div>
+
+						<template v-if="$eventBus.activeMode === 'tests' && table === 'question'">
+							<answer-editor
+									ref="answerEditor"
+									v-bind:data="{}"
+									v-bind:type="questionType">
+							</answer-editor>
+						</template>
+
 					</template>
 				</div>
 
 				<div class="modal-footer d-flex justify-content-center">
-					<button class="btn btn-success" v-on:click="submit" data-dismiss="modal" v-bind:disabled="!title ? 'disabled' : false">Добавить</button>
+					<button class="btn btn-success" v-on:click="submit" v-bind:disabled="!title ? 'disabled' : false">Добавить</button>
 				</div>
 			</div>
 		</div>

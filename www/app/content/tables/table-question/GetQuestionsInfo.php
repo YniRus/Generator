@@ -10,7 +10,8 @@ $query = "SELECT
 	`question`.`ID_Question`,
 	`question`.`Name`,
 	`question`.`Type`,
-	`question`.`Document`
+	`question`.`Document`,
+    `question`.`Answers`
 	FROM `question`
 	LEFT JOIN `question_type` ON `question_type`.`Name` = `question`.`Type`
 	WHERE `question`.`ID_Theme` = {$id}

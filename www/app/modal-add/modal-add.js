@@ -7,7 +7,9 @@ Vue.component('modal-add', {
 			title : null,
 			// Добавление вопроса
 			questionType : null,
-			questionTypes : []
+			questionTypes : [],
+			// Ответ на тест
+			answer : null
 		};
 	},
 	props : [],
@@ -18,6 +20,21 @@ Vue.component('modal-add', {
 				case 'theme' : return "modal-add/AddTheme.php";
 				case 'question' : return "modal-add/AddQuestion.php";
 				default : return null;
+			}
+		},
+        activeMode : function () {
+            return this.$eventBus.activeMode;
+        }
+	},
+	watch : {
+		questionType : function (val) {
+			if(this.$eventBus.activeMode === 'tests' && this.questionTypes) {
+				for (let index in this.questionTypes) {
+					if(this.questionTypes[index].Name === this.questionType && this.questionTypes[index].Description) {
+						this.title = this.questionTypes[index].Description;
+						return;
+					}
+				}
 			}
 		}
 	},
@@ -48,14 +65,14 @@ Vue.component('modal-add', {
 					parentId : this.parentId,
 					title : this.title,
 					type : this.questionType,
-					document : null
+					document : null,
+					answer : this.answer ? JSON.stringify(this.answer) : null
 				};
 				default : return {};
 			}
 		},
 		getQuestionTypes : async function() {
-			let activeMode = $.cookie('activeMode');
-			let forTests = activeMode === 'questions' ? 0 : 1;
+			let forTests = this.activeMode === 'questions' ? 0 : 1;
 			try {
 				let result = await $.get("content/tables/table-question/GetQuestionTypesInfo.php", {
 					forTests : forTests
@@ -65,6 +82,9 @@ Vue.component('modal-add', {
 			} catch (e) {
 				this.questionTypes = [];
 			}
+		},
+		getAnswerData : function() {
+			return this.$refs.answerEditor.returnAnswer();
 		},
 		submit : async function () {
 			if(!this.title) {
@@ -76,11 +96,32 @@ Vue.component('modal-add', {
 				$.mSnackbar('Выберите тип вопроса');
 				return ;
 			}
+
+			if(this.activeMode === 'tests') {
+				let answerResponse = this.getAnswerData();
+				if(!answerResponse) {
+					$.mSnackbar('Пустой ответ на вопрос');
+					return ;
+				}
+				if(answerResponse.error) {
+					$.mSnackbar(answerResponse.error);
+					return ;
+				}
+
+				if(answerResponse.answer) {
+					this.answer = answerResponse.answer;
+				} else {
+					$.mSnackbar('Пустые данные ответа');
+					return ;
+				}
+			}
+
 			try {
 				let result = await $.get(this.addMethodPath, this.getData());
 				result = JSON.parse(result);
 				if(result) {
 					this.$eventBus.$emit('add-item-complete');
+					$(this.$el).modal('hide');
 				}
 			} catch (e) {
 				$.mSnackbar('Ошибка добавления записи');

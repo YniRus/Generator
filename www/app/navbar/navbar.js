@@ -31,10 +31,7 @@ Vue.component('vue-navbar', {
         }
     },
     mounted : function () {
-        let activeMode = $.cookie('activeMode');
-        if(['questions','tests'].indexOf(activeMode) !== -1) {
-            this.activeMode = activeMode;
-        }
+        this.activeMode = this.$eventBus.activeMode;
         this.saveActiveMode(this.activeMode);
         this.toggleToActive();
     }
