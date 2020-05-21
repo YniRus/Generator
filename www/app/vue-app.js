@@ -2,6 +2,13 @@ function log(value) {
 	console.log(value);
 }
 
+function uuidv4() {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+		return v.toString(16);
+	});
+}
+
 let MainVueApp = new Vue({
 	el : "#mainVueApp",
 	data : {
@@ -27,6 +34,14 @@ let MainVueApp = new Vue({
 				this.order = 'ASC';
 			} else if (val === 'question') {
 				this.orderBy = 'ID_Question';
+				this.order = 'ASC';
+			} else if (val === 'tests') {
+				this.parent = {
+					type : 'teacher',
+					id : this.teacherId,
+					data : this.teacherInfo
+				};
+				this.orderBy = 'id';
 				this.order = 'ASC';
 			}
 			this.updateActiveTable();
@@ -74,13 +89,16 @@ let MainVueApp = new Vue({
 		},
 		openTable : function({table,parent}) {
 			this.activeTable = table;
-			this.parent = parent;
+			if(parent) {
+				this.parent = parent;
+			}
 		},
 		updateActiveTable : function() {
 			switch (this.activeTable) {
 				case "subject": return this.getSubjectsInfo();
 				case "theme": return this.getThemesInfo();
 				case "question": return this.getQuestionsInfo();
+				case "tests": return this.getTestsInfo();
 				default : return false;
 			}
 		},
@@ -105,6 +123,13 @@ let MainVueApp = new Vue({
 				Order: this.order,
 				WhereID: this.parent.id,
 				ForTests : this.activeMode === 'tests' ? 1 : 0
+			})
+		},
+		getTestsInfo : function () {
+			this.$eventBus.$emit('get-tests-info', {
+				OrderBy: this.orderBy,
+				Order: this.order,
+				WhereID: this.parent.id
 			})
 		},
 	},

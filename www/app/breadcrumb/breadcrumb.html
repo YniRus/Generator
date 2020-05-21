@@ -1,5 +1,8 @@
 <script type="text/x-template" id="breadcrumb_template">
     <ol class="breadcrumb my-3">
+        <li class="breadcrumb-item" v-if="activeTable === 'tests'">
+            Тесты
+        </li>
         <li id="bc-Subject" class="breadcrumb-item" v-if="activeTable === 'subject' || activeTable === 'theme' || activeTable === 'question'">
             <template v-if="activeTable === 'theme' || activeTable === 'question'">
                 <a class="font-weight-normal" v-on:click.prepend="upTo('subject')">Предметы</a>

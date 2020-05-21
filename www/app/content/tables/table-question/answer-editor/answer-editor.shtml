@@ -1,11 +1,15 @@
 <link rel="stylesheet" href="content/tables/table-question/answer-editor/answer_editor.css">
 
 <!--#include file="editors/choice/choice.html"-->
+<!--#include file="editors/input/input.html"-->
+<!--#include file="editors/match/match.html"-->
 
 <script type="text/x-template" id="answer_editor_template">
     <div class="answer-editor_wrapper">
         <label class="answer-editor_label">Редактор ответов</label>
         <answer-editor-choice ref="editorComponent" v-if="currentEditorComponent === 'answer-editor-choice'" v-bind:answer="answer"></answer-editor-choice>
+        <answer-editor-input ref="editorComponent" v-if="currentEditorComponent === 'answer-editor-input'" v-bind:answer="answer"></answer-editor-input>
+        <answer-editor-match ref="editorComponent" v-if="currentEditorComponent === 'answer-editor-match'" v-bind:answer="answer"></answer-editor-match>
     </div>
 </script>
 

@@ -1,0 +1,24 @@
+<script type="text/x-template" id="answer_editor_match_template">
+    <div class="answer-editor">
+        <div class="md-form form-sm">
+            <label> Текст вопроса </label>
+            <input v-model="answer.text" class="form-control form-control-sm" type="text">
+        </div>
+        <hr>
+        <div class="options-list container-fluid">
+            <div class="option row" v-for="option in answer.options">
+                <div class="col-6 md-form form-sm">
+                    <label>Утверждение/Термин</label>
+                    <input v-model="option.left"  v-on:input="optionEdited" class="form-control form-control-sm" type="text">
+                </div>
+
+                <div class="col-6 md-form form-sm">
+                    <label>Описание</label>
+                    <input v-model="option.right" v-on:input="optionEdited" class="form-control form-control-sm" type="text">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script src="content/tables/table-question/answer-editor/editors/match/match.js"></script>

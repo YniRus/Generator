@@ -11,6 +11,8 @@ Vue.component('answer-editor', {
         currentEditorComponent : function () {
             switch (this.type) {
                 case 'Выбор' : return 'answer-editor-choice';
+                case 'Ввод' : return 'answer-editor-input';
+                case 'Сопоставление' : return 'answer-editor-match';
             }
         }
     },
@@ -19,7 +21,6 @@ Vue.component('answer-editor', {
             if(typeof val.type !== 'undefined') {
                 Vue.set(this,'answer',val);
             } else {
-                Vue.set(this.answer,'type',this.type);
                 this.initNewAnswerForm();
             }
         }
@@ -28,11 +29,32 @@ Vue.component('answer-editor', {
         initNewAnswerForm : function() {
             switch (this.type) {
                 case 'Выбор' : {
+                    Vue.set(this,'answer',{});
+                    Vue.set(this.answer,'type',this.type);
                     Vue.set(this.answer,'text',null);
                     Vue.set(this.answer,'options',[{
                         text : null,
                         correct : false
                     }]);
+                    break;
+                }
+                case 'Ввод' : {
+                    Vue.set(this,'answer',{});
+                    Vue.set(this.answer,'type',this.type);
+                    Vue.set(this.answer,'text',null);
+                    Vue.set(this.answer,'correct',null);
+                    break;
+                }
+                case 'Сопоставление' : {
+                    Vue.set(this,'answer',{});
+                    Vue.set(this.answer,'type',this.type);
+                    Vue.set(this.answer,'text',null);
+                    Vue.set(this.answer,'options',[{
+                        id : uuidv4(),
+                        left : null,
+                        right : null
+                    }]);
+                    break;
                 }
             }
         },

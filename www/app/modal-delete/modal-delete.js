@@ -12,6 +12,7 @@ Vue.component('modal-delete', {
 				case 'subject' : return "modal-delete/DeleteSubject.php";
 				case 'theme' : return "modal-delete/DeleteTheme.php";
 				case 'question' : return "modal-delete/DeleteQuestion.php";
+				case 'tests' : return "modal-delete/DeleteTest.php";
 				default : return null;
 			}
 		},
@@ -21,6 +22,7 @@ Vue.component('modal-delete', {
 					case 'subject' : return  this.item.ID_Subject;
 					case 'theme' : return this.item.ID_Theme;
 					case 'question' : return this.item.ID_Question;
+					case 'tests' : return this.item.id;
 					default : return null;
 				}
 			} catch (e) {
@@ -33,6 +35,7 @@ Vue.component('modal-delete', {
 					case 'subject' : return this.item.SubjectName;
 					case 'theme' : return this.item.ThemeName;
 					case 'question' : return this.item.Name;
+					case 'tests' : return this.item.title;
 					default : return null;
 				}
 			} catch (e) {

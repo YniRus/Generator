@@ -1,0 +1,72 @@
+<script type="text/x-template" id="table_tests_template">
+    <div class="table-wrapper">
+        <h2 class="table-headtext">Список ваших тестов</h2>
+
+        <div class="md-form form-sm mb-0">
+            <input type="text" v-model="searchString" class="form-control" autocomplete="off">
+            <label  class="">Поиск</label>
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th># <a href="#" class="float-right" v-on:click.prevent="sort('id')" > <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
+                <th>Название <a href="#" class="float-right" v-on:click.prevent="sort('title')"> <i class="fa fa-sort" aria-hidden="true"></i> </a> </th>
+                <th>Параметры</th>
+                <th>Доступ</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="test in tests"  v-if="!test.Hide">
+                <th scope="row">{{test.id}}</th>
+                <td>
+                    <span class="Name">{{test.title}}</span>
+
+                    <div class="d-inline-block float-right">
+                        <a href="#" class="mr-3 OpenUpdate" data-toggle="modal" v-on:click="editItem(test)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                        <a href="#" class="OpenDelete" data-toggle="modal" v-on:click="deleteItem(test)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    </div>
+                </td>
+                <td>
+                    <div class="test-params row">
+                        <div class="col-4 d-flex flex-column">
+                            <span v-if="test.subject_name"><b>Предмет:</b> {{test.subject_name}}</span>
+                            <span v-if="test.theme_name"><b>Тема:</b> {{test.theme_name}}</span>
+                        </div>
+                        <div class="col-4 d-flex flex-column">
+                            <span v-if="test.time"><b>Время:</b> {{test.time}}</span>
+                            <span v-if="test.question_count"><b>Заданий:</b> {{test.question_count}}</span>
+                        </div>
+                        <div class="col-4 d-flex flex-column">
+                            <span v-if="test.difficult"><b>Индекс сложности:</b> {{test.difficult}}</span>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <template v-if="isActive(test)">
+                        Активен до {{test.access_until}}
+                        <div class="d-inline-block float-right">
+                            <a href="#" v-on:click="deactivate(test)" class="mr-1"><i class="fa fa-ban" aria-hidden="true"></i></a>
+                        </div>
+                    </template>
+                    <template v-else>
+                        Не активен с {{test.access_until}}
+                        <div class="d-inline-block float-right">
+                            <a href="#" v-on:click="activate(test)" class="mr-1" data-toggle="modal" ><i class="fa fa-unlock" aria-hidden="true"></i></a>
+                        </div>
+                    </template>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="text-center">
+            <a v-on:click.prepend="addItem" class="btn btn-default btn-rounded mb-4">Новый тест</a>
+        </div>
+
+        <modal-edit-test></modal-edit-test>
+
+    </div>
+</script>
+
+<script src="content/tables/table-tests/table_tests.js"></script>

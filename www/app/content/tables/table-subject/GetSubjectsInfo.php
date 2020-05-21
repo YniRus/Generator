@@ -8,8 +8,7 @@ $id = $_GET['WhereID'];
 $query = "SELECT
    `subject`.`ID_Subject`,
    `subject`.`Name` AS SubjectName,
-   (SELECT COUNT(*) FROM `theme` WHERE `theme`.`ID_Subject` = `subject`.`ID_Subject`) AS CountTheme,
-   (SELECT COUNT(*) FROM `question` WHERE `question`.`ID_Subject` = `subject`.`ID_Subject`) AS CountQuestion
+   (SELECT COUNT(*) FROM `theme` WHERE `theme`.`ID_Subject` = `subject`.`ID_Subject`) AS CountTheme
    FROM `subject`
    WHERE `subject`.`ID_Teacher` = {$id}
    ORDER BY {$orderBy} {$order}";

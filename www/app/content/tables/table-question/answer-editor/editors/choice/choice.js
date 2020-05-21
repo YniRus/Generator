@@ -73,8 +73,5 @@ Vue.component('answer-editor-choice', {
                 answer : answer
             };
         }
-    },
-    mounted : function () {
-        this.$eventBus.$once('validate-answer-editor-data',this.validate);
     }
 });

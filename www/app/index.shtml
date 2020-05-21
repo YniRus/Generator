@@ -36,6 +36,7 @@
 <!--#include file="content/tables/table-subject/table-subject.html"-->
 <!--#include file="content/tables/table-theme/table-theme.html"-->
 <!--#include file="content/tables/table-question/table-question.html"-->
+<!--#include file="content/tables/table-tests/table-tests.html"-->
 
 <!--#include file="content/tables/table-question/update-type/update-type.html"-->
 <!--#include file="content/tables/table-question/documents/modal-add-document.html"-->
@@ -44,6 +45,7 @@
 <!--#include file="modal-add/modal-add.html"-->
 <!--#include file="modal-delete/modal-delete.html"-->
 <!--#include file="modal-update/modal-update.html"-->
+<!--#include file="content/tables/table-tests/modal-edit-test/modal-edit-test.html"-->
 
 <div id="mainVueApp">
     <vue-navbar v-bind:teacher-info="teacherInfo"></vue-navbar>
@@ -60,14 +62,11 @@
         <table-subject v-show="activeTable === 'subject'" v-bind:parent="parent"></table-subject>
         <table-theme v-show="activeTable === 'theme'" v-bind:parent="parent"></table-theme>
         <table-question v-show="activeTable === 'question'" v-bind:parent="parent"></table-question>
+        <table-tests v-show="activeTable === 'tests'" v-bind:parent="parent"></table-tests>
 
         <modal-add></modal-add>
         <modal-delete></modal-delete>
         <modal-edit></modal-edit>
-
-        <modal-edit-question-type></modal-edit-question-type>
-        <modal-add-question-document></modal-add-question-document>
-        <modal-delete-question-document></modal-delete-question-document>
     </div>
 
     <div id="preview" class="container text-center pt-5" v-else>
