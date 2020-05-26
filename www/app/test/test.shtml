@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title></title>
+
+    <link rel="stylesheet" href="../../assets/tether/tether.css">
+    <link rel="stylesheet" href="../../assets/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="../../assets/mdb/mdb.css">
+    <link rel="stylesheet" href="../../assets/font-awesome/font-awesome.css">
+    <link rel="stylesheet" href="../../assets/snackBar/mSnackbar.css">
+
+    <script src="../../assets/jQuery/jquery-3.2.1.js"></script>
+    <script src="../../assets/jQuery/jquery.cookie.js"></script>
+    <script src="../../assets/jQuery/jquery.json.min.js"></script>
+    <script src="../../assets/vue/vue.js"></script>
+    <script> Vue.prototype.$eventBus = new Vue(); </script>
+</head>
+
+<body>
+
+<!--#include file="question-type/choice/template.html"-->
+<!--#include file="question-type/input/template.html"-->
+<!--#include file="question-type/match/template.html"-->
+
+<div id="testsVueApp">
+    <nav class="navbar navbar-dark indigo d-flex flex-row justify-content-between align-items-center">
+        <div>
+            <span class="navbar-text white-text">{{user.name}}, группа {{user.group}}</span>
+        </div>
+        <div>
+            <span class="navbar-text white-text">{{test.info.title}}
+            <span v-if="!completed">(Задание №{{test.progress.currentQuestionNumber}} из {{test.progress.totalQuestionCount}})</span>
+            </span>
+        </div>
+        <div>
+            <span class="navbar-text white-text">
+                <i class="fa fa-check"></i> {{result.points}}
+                <i class="fa fa-clock-o ml-2"></i> {{test.progress.timeLeft | timeLeftFormat}}
+            </span>
+            <button class="btn btn-sm align-middle btn-outline-white" type="button"  data-toggle="modal" data-target="#FinishTestModal">Завершить</button>
+        </div>
+    </nav>
+
+<!--    <nav class="navbar fixed-bottom navbar-dark indigo">-->
+<!--        <a class="navbar-brand" href="#">Fixed bottom</a>-->
+<!--    </nav>-->
+
+    <div class="container mt-3">
+        <template v-if="!completed">
+            <div class="d-flex flex-row justify-content-center align-items-center">
+                <button class="btn btn-sm btn-danger" type="button" v-on:click="skipQuestion">Пропустить</button>
+                <button class="btn btn-dark-green" type="button" v-on:click="nextQuestion">Далее</button>
+                <button class="btn btn-sm btn-warning" type="button" v-bind:class="{'disabled' : !allowDelay}" v-on:click="delayQuestion">Отложить</button>
+            </div>
+            <component ref="questionForm" v-bind:is="currentQuestionForm" v-bind:data="currentQuestion"></component>
+        </template>
+        <template v-else>
+            <h3 class="text-center">Тестирование завершено</h3>
+            <div class="text-center my-4">
+                <small>Оценка:</small>
+                <h2 class="d-inline-block mr-2">{{result.mark}}</h2>
+                <small>Сложность:</small>
+                <h2 class="d-inline-block mr-2">{{result.difficult}}</h2>
+                <small>Процент выполнения:</small>
+                <h2 class="d-inline-block mr-2">{{result.persent}}%</h2>
+            </div>
+            <h5> Лог выполнения </h5>
+            <div class="row" v-for="questionStat in result.questionsStat">
+                Задание "[{{questionStat.id}}] {{questionStat.title}}" выполнено за <b class="px-1">{{questionStat.time | timeLeftFormat}}</b> минут. За задание получено <b class="px-1">{{questionStat.points}} </b> баллов
+            </div>
+        </template>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="FinishTestModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Завершить тестирование</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Вы собираетесь завершить тестирование досрочно. Вы уверены?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary">Завешить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="../../assets/tether/tether.js"></script>
+<script src="../../assets/bootstrap/bootstrap.js"></script>
+<script src="../../assets/mdb/mdb.js"></script>
+<script src="../../assets/snackBar/mSnackbar.min.js"></script>
+
+<script src="test-app.js"></script>
+</body>
+
+</html>

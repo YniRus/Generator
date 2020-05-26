@@ -3,22 +3,27 @@
 <script type="text/x-template" id="navbar_template">
 	<nav class="navbar navbar-toggleable-sm navbar-light bg-default">
 
-		<span class="navbar-brand static-navbar-brand">Генератор</span>
-		<div class="navbar-toggle-brand-wrapper">
-			<a class="navbar-brand navbar-toggle-brand navbar-brand-1"
-			   v-bind:style="brandQuestions"
-			   v-on:mouseover="toggleTo('questions')"
-			   v-on:mouseleave="toggleToActive()"
-			   v-on:click="saveActiveMode('questions')"
-			   href="index.shtml">билетов</a>
+		<template v-if="teacherInfo">
+			<span class="navbar-brand static-navbar-brand">Генератор</span>
+			<div class="navbar-toggle-brand-wrapper">
+				<a class="navbar-brand navbar-toggle-brand navbar-brand-1"
+				   v-bind:style="brandQuestions"
+				   v-on:mouseover="toggleTo('questions')"
+				   v-on:mouseleave="toggleToActive()"
+				   v-on:click="saveActiveMode('questions')"
+				   href="index.shtml">билетов</a>
 
-			<a class="navbar-brand navbar-toggle-brand navbar-brand-2"
-			   v-bind:style="brandTests"
-			   v-on:mouseover="toggleTo('tests')"
-			   v-on:mouseleave="toggleToActive()"
-			   v-on:click="saveActiveMode('tests')"
-			href="index.shtml">тестов</a>
-		</div>
+				<a class="navbar-brand navbar-toggle-brand navbar-brand-2"
+				   v-bind:style="brandTests"
+				   v-on:mouseover="toggleTo('tests')"
+				   v-on:mouseleave="toggleToActive()"
+				   v-on:click="saveActiveMode('tests')"
+				   href="index.shtml">тестов</a>
+			</div>
+		</template>
+		<template v-else>
+			<span class="navbar-brand static-navbar-brand">Генератор билетов и тестов</span>
+		</template>
 
 		<!-- Collapse button -->
 		<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent"><span class="navbar-toggler-icon"></span></button>
@@ -56,6 +61,7 @@
 				<template v-else>
 					<button type="button" class="btn btn-sm btn-default Login" data-toggle="modal" data-target="#ModalLogin">Войти</button>
 					<button type="button" class="btn btn-sm btn-secondary Register" data-toggle="modal" data-target="#ModalRegister">Зарегистрироваться</button>
+					<button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#ModalRunTest">Пройти тест</button>
 				</template>
 			</span>
 		</div>

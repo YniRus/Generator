@@ -1,0 +1,107 @@
+<script type="text/x-template" id="run_test_form_template">
+    <div class="modal hide fade" id="ModalRunTest" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-bold">Пройти тест</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="md-form form-sm">
+                                <i class="fa fa-user prefix"></i>
+                                <input v-model="user.name" type="text" class="form-control">
+                                <label>Имя</label>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="md-form form-sm">
+                                <i class="fa fa-users prefix"></i>
+                                <input v-model="user.group" type="text" class="form-control">
+                                <label>Группа</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label>Университет</label>
+                    <div class="md-form">
+                        <select class="form-control mb-0" v-model="university">
+                            <option
+                                    v-for="option in universitiesList"
+                                    v-bind:value="option.value">
+                                {{option.text}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <label>Факультет</label>
+                    <div class="md-form">
+                        <select class="form-control mb-0" v-model="department">
+                            <option
+                                    v-for="option in departmentsList"
+                                    v-bind:value="option.value">
+                                {{option.text}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <label>Преподаватель</label>
+                    <div class="md-form">
+                        <select class="form-control mb-0" v-model="teacher">
+                            <option
+                                    v-for="option in teachersList"
+                                    v-bind:value="option.value">
+                                {{option.text}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <template v-if="teacher">
+                        <template v-if="Array.isArray(tests) && tests.length == 0">
+                            <div class="mx-2">
+                                У выбранного преподавателя в данный момент нет активных тестов
+                            </div>
+                        </template>
+                        <div v-else>
+                            <label>Тесты</label>
+                            <div class="list-group">
+                                <div class="list-group-item list-group-item-action flex-column align-items-start"
+                                     v-for="test in tests"
+                                     v-bind:class="{ active: test.id == activeTest}"
+                                     v-on:click="activeTest = test.id"
+                                >
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-2 h5">{{test.title}}</h5>
+                                        <small>
+                                            <span class="badge badge-primary badge-pill">{{test.question_count}}</span> заданий /
+                                            <span class="badge badge-secondary badge-pill">{{test.time}}</span> минут
+                                        </small>
+                                    </div>
+                                    <p class="mb-2 d-flex flex-column">
+                                        <span v-if="test.subject_name"><b>Предмет:</b> {{test.subject_name}}</span>
+                                        <span v-if="test.theme_name"><b>Тема:</b> {{test.theme_name}}</span>
+                                    </p>
+                                    <small>Активно до {{test.access_until}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button class="btn btn-default" v-bind:class="{disabled : !allowSubmit}" v-on:click.prevent="submit" data-dismiss="modal" type="submit">Приступить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script src="run-test-form/run_test.js"></script>

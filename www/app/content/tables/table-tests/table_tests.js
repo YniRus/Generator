@@ -88,6 +88,9 @@ Vue.component('table-tests', {
                 $.mSnackbar('Ошибка');
             }
         },
+        logs : function(item) {
+            window.open(`http://generator/www/app/res/test-logs/${item.log_dir}/`);
+        },
         search :function (text) {
             for (let index in this.tests) {
                 if(this.tests[index].title.indexOf(text) !== -1) {

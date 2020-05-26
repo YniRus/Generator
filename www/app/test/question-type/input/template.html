@@ -1,0 +1,11 @@
+<script type="text/x-template" id="question_type_input_template">
+    <div class="question-form text-center" v-if="question !== null">
+        <p>{{question.info.Name}}</p>
+        <p class="font-weight-bold"> {{question.info.Answers.text}} </p>
+        <div class="answer-list">
+            <input class="m-2p-1" v-model="answer" type="text" placeholder="Введите ответ">
+        </div>
+    </div>
+</script>
+
+<script src="question-type/input/script.js"></script>

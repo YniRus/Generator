@@ -14,6 +14,7 @@
                 <th>Название <a href="#" class="float-right" v-on:click.prevent="sort('title')"> <i class="fa fa-sort" aria-hidden="true"></i> </a> </th>
                 <th>Параметры</th>
                 <th>Доступ</th>
+                <th>Логи</th>
             </tr>
             </thead>
             <tbody>
@@ -55,6 +56,9 @@
                             <a href="#" v-on:click="activate(test)" class="mr-1" data-toggle="modal" ><i class="fa fa-unlock" aria-hidden="true"></i></a>
                         </div>
                     </template>
+                </td>
+                <td class="text-center">
+                    <a v-if="test.log_dir" href="#" v-on:click.prevent="logs(test)"> <i class="fa fa-eye" aria-hidden="true"></i> </a>
                 </td>
             </tr>
             </tbody>
