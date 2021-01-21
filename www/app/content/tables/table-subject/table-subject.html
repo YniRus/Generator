@@ -1,26 +1,43 @@
-<table class="table table-bordered table-hover d-none" id="Table-Subject">
-	<thead>
-		<tr>
-			<th># <a href="#" class="float-right"> <i class="fa fa-sort SortBy" id="SortBy-ID"aria-hidden="true"></i> </a></th>
-			<th>Название <a href="#" class="float-right"> <i class="fa fa-sort SortBy" id="SortBy-Name" aria-hidden="true"></i> </a> </th>
-			<th>Список тем <a href="#" class="float-right"> <i class="fa fa-sort SortBy" id="SortBy-CountTheme" aria-hidden="true"></i> </a> </th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr class="TemplateSubject d-none">
-			<th scope="row"> 0 </th>
-			<td>
-				<span class="Name" id=""></span>
+<script type="text/x-template" id="table_subject_template">
+	<div class="table-wrapper">
+		<h2 class="table-headtext">Список ваших предметов</h2>
 
-				<div class="d-inline-block float-right">
-					<a href="#" class="mr-3 OpenUpdate" data-toggle="modal" data-target="#ModalUpdate"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-					<a href="#" class="OpenDelete" data-toggle="modal" data-target="#ModalDelete"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-				</div>
-			</td>
-			<td>
-				<span class="CountTheme" id=""></span>
-				<a href="#" class="float-right ShowTable" id="ShowTable-Theme"> <i class="fa fa-eye" aria-hidden="true"></i> </a>
-			</td>
-		</tr>
-	</tbody>
-</table>
+		<div class="md-form form-sm mb-0">
+			<input type="text" v-model="searchString" class="form-control" autocomplete="off">
+			<label for="Search" class="">Поиск</label>
+		</div>
+
+		<table class="table table-bordered table-hover" id="Table-Subject">
+			<thead>
+			<tr>
+				<th># <a href="#" class="float-right" v-on:click.prevent="sort('ID_Subject')" > <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
+				<th>Название <a href="#" class="float-right" v-on:click.prevent="sort('Name')"> <i class="fa fa-sort" id="SortBy-Name" aria-hidden="true"></i> </a> </th>
+				<th>Список тем <a href="#" class="float-right" v-on:click.prevent="sort('CountTheme')"> <i class="fa fa-sort" id="SortBy-CountTheme" aria-hidden="true"></i> </a> </th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr v-for="subject in subjects"  v-if="!subject.Hide" class="Subject">
+				<th scope="row">{{subject.ID_Subject}}</th>
+				<td>
+					<span class="Name">{{subject.SubjectName}}</span>
+
+					<div class="d-inline-block float-right">
+						<a href="#" class="mr-3 OpenUpdate" data-toggle="modal" v-on:click="editItem(subject)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+						<a href="#" class="OpenDelete" data-toggle="modal" v-on:click="deleteItem(subject)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+					</div>
+				</td>
+				<td>
+					<span class="CountTheme">{{subject.CountTheme}}</span>
+					<a href="#" class="float-right" v-on:click.prevent="subtable('theme',subject)"> <i class="fa fa-eye" aria-hidden="true"></i> </a>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+
+		<div class="text-center">
+			<a v-on:click.prepend="addItem" class="btn btn-default btn-rounded mb-4" data-target="#ModalAdd">Новый предмет</a>
+		</div>
+	</div>
+</script>
+
+<script src="content/tables/table-subject/table_subject.js"></script>

@@ -1,42 +1,69 @@
-<table class="table table-bordered table-hover d-none" id="Table-Question">
-	<thead>
-		<tr>
-			<th># <a href="#" class="float-right"> <i class="fa fa-sort SortBy" id="SortBy-ID" aria-hidden="true"></i> </a></th>
-			<th>Текст <a href="#" class="float-right"> <i class="fa fa-sort SortBy" id="SortBy-Name" aria-hidden="true"></i> </a> </th>
-			<th>Тип вопроса <a href="#" class="float-right"> <i class="fa fa-sort SortBy" id="SortBy-Type" aria-hidden="true"></i> </a> </th>
-			<th>Документ <a href="#" class="float-right"> <i class="fa fa-sort SortBy" id="SortBy-Document" aria-hidden="true"></i> </a> </th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr class="TemplateQuestion d-none" id="Row">
-			<th scope="row"> 0 </th>
-			<td>
-				<span class="Name" id="Name..."></span>
+<script type="text/x-template" id="table_question_template">
+	<div class="table-wrapper">
+		<h2 class="table-headtext">Список ваших вопросов <template v-if="parent.data && parent.data.ThemeName">по теме {{parent.data.ThemeName}}</template></h2>
 
-				<div class="d-inline-block float-right">
-					<a href="#" class="mr-3 OpenUpdate" data-toggle="modal" data-target="#ModalUpdate"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-					<a href="#" class="OpenDelete" data-toggle="modal" data-target="#ModalDelete"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-				</div>
-			</td>
-			<td>
-				<span class="Type" id="Type..."></span>
-				<a href="#" class="float-right UpdateType" data-toggle="modal" data-target="#ModalUpdateType"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-			</td>
-			<td>
-				<a href="#" class="float-left ShowDocument" data-toggle="modal" data-target="#ShowDocumentModal"> <i class="fa fa-eye" aria-hidden="true"></i> Посмотреть </a>
-
-				<a href="#" class="float-right DeleteDocument" data-toggle="modal" data-target="#ModalDeleteDocument"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-				<a href="#" class="float-right mr-3 AddDocument" data-toggle="modal" data-target="#AddDocumentModal"><i class="fa fa-plus" aria-hidden="true"></i></a>
-			</td>
-		</tr>
-	</tbody>
-</table>
-
-<!-- Modal -->
-<div class="modal fade" id="ShowDocumentModal" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-document-dialog" role="document">
-		<div class="modal-content">
-			<img alt="Изображения нет">
+		<div class="md-form form-sm mb-0">
+			<input type="text" v-model="searchString" class="form-control" autocomplete="off">
+			<label for="Search" class="">Поиск</label>
 		</div>
+
+		<table class="table table-bordered table-hover" id="Table-Subject">
+			<thead>
+			<tr>
+				<th># <a href="#" class="float-right" v-on:click.prevent="sort('ID_Question')" > <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
+				<th>Название <a href="#" class="float-right" v-on:click.prevent="sort('Name')"> <i class="fa fa-sort" aria-hidden="true"></i> </a> </th>
+				<th>Тип <a href="#" class="float-right" v-on:click.prevent="sort('Type')"> <i class="fa fa-sort" aria-hidden="true"></i> </a> </th>
+				<th>Документ <a href="#" class="float-right" v-on:click.prevent="sort('Document')"> <i class="fa fa-sort" aria-hidden="true"></i> </a> </th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr v-for="question in questions"  v-if="!question.Hide" class="Question">
+				<th scope="row">{{question.ID_Question}}</th>
+				<td>
+					<span class="Name">{{question.Name}}</span>
+
+					<div class="d-inline-block float-right">
+						<a href="#" class="mr-3" v-on:click="editItem(question)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+						<a href="#" v-on:click="deleteItem(question)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+					</div>
+				</td>
+				<td>
+					<span class="Type">{{question.Type}}</span>
+					<a href="#" class="float-right" v-on:click="editType(question)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+					<a href="#" class="float-right mr-3" v-if="question.Answers && activeMode == 'tests'" v-on:click="editAnswers(question)"> <i class="fa fa-list" aria-hidden="true"></i></a>
+				</td>
+				<td>
+					<a href="#" class="float-left" v-if="question.Document" v-on:click="showDocument(question)"> <i class="fa fa-eye" aria-hidden="true"></i> Посмотреть </a>
+
+					<a href="#" class="float-right" v-if="question.Document" v-on:click="deleteDocument(question)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+					<a href="#" class="float-right mr-3" v-on:click="addDocument(question)">
+						<i v-if="question.Document" class="fa fa-edit" aria-hidden="true" ></i>
+						<i v-else class="fa fa-plus" aria-hidden="true" ></i>
+					</a>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+
+		<div class="text-center">
+			<a v-on:click.prepend="addItem" class="btn btn-default btn-rounded mb-4">Новый вопрос</a>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="ShowDocumentModal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-document-dialog" role="document">
+				<div class="modal-content">
+					<img alt="Изображения нет" v-bind:src="document">
+				</div>
+			</div>
+		</div>
+
+		<modal-edit-question-type></modal-edit-question-type>
+		<modal-add-question-document></modal-add-question-document>
+		<modal-delete-question-document></modal-delete-question-document>
+		<answer-editor-form v-if="activeMode === 'tests'"></answer-editor-form>
+
 	</div>
-</div>
+</script>
+
+<script src="content/tables/table-question/table_question.js"></script>

@@ -2,66 +2,103 @@
 <html lang="ru">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Генератор билетов - Главная</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Генератор билетов - Главная</title>
 
-	<link rel="stylesheet" href="../assets/tether/tether.css">
-	<link rel="stylesheet" href="../assets/bootstrap/bootstrap.css">
-	<link rel="stylesheet" href="../assets/mdb/mdb.css">
-	<link rel="stylesheet" href="../assets/font-awesome/font-awesome.css">
-	<link rel="stylesheet" href="../assets/snackBar/mSnackbar.css">
+    <link rel="stylesheet" href="../assets/tether/tether.css">
+    <link rel="stylesheet" href="../assets/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="../assets/mdb/mdb.css">
+    <link rel="stylesheet" href="../assets/font-awesome/font-awesome.css">
+    <link rel="stylesheet" href="../assets/snackBar/mSnackbar.css">
 
-	<link rel="stylesheet" href="content/content.css">
+    <link rel="stylesheet" href="content/content.css">
+    <script src="../assets/jQuery/jquery-3.2.1.js"></script>
+    <script src="../assets/jQuery/jquery.cookie.js"></script>
+    <script src="../assets/jQuery/jquery.json.min.js"></script>
+    <script src="../assets/vue/vue.js"></script>
+    <script src="vue-event-bus.js"> </script>
 </head>
 
 <body>
 
-	<!--#include file="navbar/navbar.html"-->
+<!--#include file="navbar/navbar.html"-->
+<!--#include file="breadcrumb/breadcrumb.html"-->
 
-	<!--#include file="content/content.shtml"-->
+<!--#include file="generate-cards/generate.html"-->
+<!--#include file="run-test-form/form.html"-->
 
-	<!--#include file="modal-add/modal-add.html"-->
-	<!--#include file="modal-update/modal-update.html"-->
-	<!--#include file="modal-delete/modal-delete.html"-->
+<!--#include file="login-form/form.html"-->
+<!--#include file="register-form/form.html"-->
+<!--#include file="unlogin-form/form.html"-->
 
-	<!--#include file="login-form/form.html"-->
-	<!--#include file="register-form/form.html"-->
-	<!--#include file="unlogin-form/form.html"-->
+<!--#include file="content/tables/table-question/answer-editor/answer-editor.shtml"-->
 
-	<!--#include file="generate/generate.html"-->
+<!--#include file="content/tables/table-subject/table-subject.html"-->
+<!--#include file="content/tables/table-theme/table-theme.html"-->
+<!--#include file="content/tables/table-question/table-question.html"-->
+<!--#include file="content/tables/table-tests/table-tests.html"-->
 
-	<script src="../assets/jQuery/jquery-3.2.1.js"></script>
-	<script src="../assets/jQuery/jquery.cookie.js"></script>
-	<script src="../assets/jQuery/jquery.json.min.js"></script>
-	<script src="../assets/tether/tether.js"></script>
-	<script src="../assets/bootstrap/bootstrap.js"></script>
-	<script src="../assets/mdb/mdb.js"></script>
-	<script src="../assets/snackBar/mSnackbar.min.js"></script>
-	<script src="../assets/vue/vue.js"></script>
+<!--#include file="content/tables/table-question/update-type/update-type.html"-->
+<!--#include file="content/tables/table-question/documents/modal-add-document.html"-->
+<!--#include file="content/tables/table-question/documents/modal-delete-document.html"-->
 
-	<script src="app.js"></script>
+<!--#include file="modal-add/modal-add.html"-->
+<!--#include file="modal-delete/modal-delete.html"-->
+<!--#include file="modal-update/modal-update.html"-->
+<!--#include file="content/tables/table-tests/modal-edit-test/modal-edit-test.html"-->
 
-	<script src="content/tables/table-create.js"></script>
-	<script src="content/tables/table-openSubtable.js"></script>
-	<script src="content/tables/table-returnUp.js"></script>
-	<script src="content/tables/table-search.js"></script>
-	<script src="content/tables/table-sortBy.js"></script>
-	<script src="content/tables/table-showDocument.js"></script>
+<div id="mainVueApp">
+    <vue-navbar v-bind:teacher-info="teacherInfo"></vue-navbar>
+    <login-form></login-form>
+    <unlogin-form></unlogin-form>
+    <register-form></register-form>
 
-	<script src="modal-add/modal-add.js"></script>
-	<script src="modal-delete/modal-delete.js"></script>
-	<script src="modal-update/modal-update.js"></script>
+    <run-test-form></run-test-form>
 
-	<script src="content/tables/table-question/modal-update-type/update-type.js"></script>
-	<script src="content/tables/table-question/modal-add-document/add-document.js"></script>
-	<script src="content/tables/table-question/modal-add-document/delete-document.js"></script>
+    <div class="container-fluid" id="main-container" v-if="teacherInfo">
+        <generate-cards-form v-bind:teacher="teacherInfo"></generate-cards-form>
 
-	<script src="register-form/register.js"></script>
-	<script src="login-form/login.js"></script>
-	<script src="unlogin-form/unlogin.js"></script>
+        <vue-breadcrumb v-bind:parent="parent" v-bind:active-table="activeTable"></vue-breadcrumb>
 
-	<script src="generate/generate.js"></script>
+        <table-subject v-show="activeTable === 'subject'" v-bind:parent="parent"></table-subject>
+        <table-theme v-show="activeTable === 'theme'" v-bind:parent="parent"></table-theme>
+        <table-question v-show="activeTable === 'question'" v-bind:parent="parent"></table-question>
+        <table-tests v-show="activeTable === 'tests'" v-bind:parent="parent"></table-tests>
+
+        <modal-add></modal-add>
+        <modal-delete></modal-delete>
+        <modal-edit></modal-edit>
+    </div>
+
+    <div id="preview" class="container text-center pt-5" v-else>
+        <h1 class="display-4">Система автоматизированной генерации экзаменационных билетов и тестовых заданий</h1>
+
+        <div class="spase-300px"></div>
+
+        <div class="text-right w-100 pt-5">
+            <p class="">
+                Выполнил:
+                <br> студент группы 18ВВм2
+                <br> Мачильский Владислав
+            </p>
+        </div>
+
+        <div class="text-center w-100 pt-5">
+            <p class="">
+                Пенза 2020
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<script src="../assets/tether/tether.js"></script>
+<script src="../assets/bootstrap/bootstrap.js"></script>
+<script src="../assets/mdb/mdb.js"></script>
+<script src="../assets/snackBar/mSnackbar.min.js"></script>
+
+<script src="vue-app.js"></script>
 </body>
 
 </html>

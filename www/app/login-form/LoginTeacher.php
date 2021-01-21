@@ -1,9 +1,9 @@
 <?php  
 require_once '../MySQL_Connect.php';
 
-$Password = md5($_GET['password']);
-$stmt = $db->prepare("SELECT teacher_id, fio, login, `password` FROM teacher WHERE `login` = ? AND `password` = ?");
-$stmt->bind_param('ss', $_GET['login'], $password);
+$Password = md5($_GET['Password']);
+$stmt = $db->prepare("SELECT ID_Teacher, FIO, Login, `Password` FROM teacher WHERE `Login` = ? AND `Password` = ?");
+$stmt->bind_param('ss', $_GET['Login'], $Password);
 $stmt->execute();
 
 $results = $stmt->get_result();

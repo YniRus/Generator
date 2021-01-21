@@ -1,0 +1,18 @@
+<script type="text/x-template" id="question_type_choice_template">
+    <div class="question-form text-center" v-if="question !== null">
+
+        <p>{{question.info.Name}}</p>
+
+        <p class="font-weight-bold"> {{question.info.Answers.text}} </p>
+
+        <div class="answer-list">
+            <div class="answer d-flex flex-row justify-content-start align-items-center p-2" v-for="option in question.info.Answers.options">
+                <input v-model="option.checked" type="checkbox">
+                <div class="ml-2">{{option.text}}</div>
+            </div>
+        </div>
+
+    </div>
+</script>
+
+<script src="question-type/choice/script.js"></script>

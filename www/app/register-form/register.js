@@ -1,75 +1,69 @@
-function onOpenRegister(e) {
-	$.get("register-form/GetUniversityInfo.php", {},
-		onGetUniversity);
-}
+Vue.component('register-form', {
+	template: '#register_form_template',
+	data() {
+		return {
+			universitiesList: [],
+			departmentsList: [],
+			university:null,
+			department:null,
+			fio: null,
+			login: null,
+			password: null
+		}
+	},
+	watch: {
+		university: function (val) {
+			this.loadDepartments();
+		}
+	},
+	methods: {
+		setSelectData : function(data,list,property) {
+			let Data = JSON.parse(data);
+			for (let i = 0; i < Data.length; i++) {
+				this[list].push({
+					value : Data[i][0], //ID
+					text : Data[i][1] //Name
+				});
+				if(!this[property]) {
+					this[property] = Data[i][0];
+				}
+			}
+		},
+		loadUniversities: async function () {
+			if(this.universitiesList.length === 0) {
+				let data = await $.get("register-form/GetUniversityInfo.php", {});
+				this.setSelectData(data,'universitiesList','university');
+			}
+		},
+		loadDepartments: async function () {
+			let data = await $.get("register-form/GetDepartmentInfo.php", {ID: this.university});
+			this.setSelectData(data,'departmentsList','department');
+		},
+		submitRegister: async function () {
+			let registerInfo = await $.get("register-form/AddTeacher.php", {
+				ID_University: this.university,
+				ID_Department: this.department,
+				FIO: this.fio,
+				Login: this.login,
+				Password: this.password,
+			});
 
-function onGetUniversity(data) {
-	var Data = JSON.parse(data);
-	$("#RegisterForm-University").empty();
-	for (var i = 0; i < Data.length; i++) {
-		var ID = Data[i][0];
-		var Name = Data[i][1];
-		$("#RegisterForm-University").append("<option id='RegisterUniversity-" + ID + "'>" + Name + "</option>");
+			if (registerInfo == "[]") {
+				$.mSnackbar('Ошибка регистрации! Возможно данный Логин занят.');
+			} else {
+				let Data = JSON.parse(registerInfo);
+				let TeacherInfo = Data[0];
+				$.cookie('TeacherInfo', JSON.stringify(TeacherInfo), {
+					expires: 5,
+					path: '/',
+				});
+
+				this.$eventBus.$emit('update-teacher-info', TeacherInfo);
+				$.mSnackbar('Успешная регистрация в системе!');
+			}
+		}
+	},
+	mounted : function () {
+		$("#ModalRegister").on('show.bs.modal',this.loadUniversities);
 	}
-
-	$.get("register-form/GetDepartmentInfo.php", {
-		ID: $("#RegisterForm-University option:selected").attr("id").split("-")[1],
-	}, onGetDepartment);
-}
-
-function onGetDepartment(data) {
-	var Data = JSON.parse(data);
-	$("#RegisterForm-Department").empty();
-	for (var i = 0; i < Data.length; i++) {
-		var ID = Data[i][0];
-		var Name = Data[i][1];
-		$("#RegisterForm-Department").append("<option id='RegisterDepartment-" + ID + "'>" + Name + "</option>");
-	}
-}
-
-$('#SubmitRegister').click(function () {
-	$.get("register-form/AddTeacher.php", {
-		ID_University: $("#RegisterForm-University option:selected").attr("id").split("-")[1],
-		ID_Department: $("#RegisterForm-University option:selected").attr("id").split("-")[1],
-		FIO: $("#RegisterForm-FIO").val(),
-		Login: $("#RegisterForm-Login").val(),
-		Password: $("#RegisterForm-Password").val(),
-	}, onRegister);
 });
-
-function onRegister(data) {
-	if (data == "[]") {
-		$.mSnackbar('Ошибка регистрации! Возможно данный Логин занят.');
-
-		$(".Register").removeClass("d-none");
-		$(".Login").removeClass("d-none");
-		$(".Unlogin").addClass("d-none");
-	} else {
-		var Data = JSON.parse(data);
-
-		TeacherInfo = Data[0];
-		TeacherID = Data[0]['ID_Teacher'];
-		$('#NavbarUserName').text(TeacherInfo['FIO']);
-
-		$.cookie('TeacherInfo', JSON.stringify(TeacherInfo), {
-			expires: 5,
-			path: '/',
-		});
-
-		$.mSnackbar('Успешная регистрация в системе!');
-
-		$(".Register").addClass("d-none");
-		$(".Login").addClass("d-none");
-		$(".Unlogin").removeClass("d-none");
-
-		$(".navbar-nav").find('li').removeClass("d-none");
-		$("#main-container").removeClass("d-none");
-		$("#preview").addClass("d-none");
-
-		$.get("content/tables/table-subject/GetSubjectsInfo.php", {
-			OrderBy: "ID",
-			Desc: 0,
-			WhereID: TeacherID
-		}, CreateTable);
-	}
-}

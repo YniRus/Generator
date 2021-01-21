@@ -1,0 +1,62 @@
+<style>
+    .question-form-match .option {
+        transition: 0.15s ease-in-out all;
+    }
+
+</style>
+
+<script type="text/x-template" id="question_type_match_template">
+    <div class="question-form-match text-center" v-if="question !== null">
+
+        <p>{{question.info.Name}}</p>
+
+        <p class="font-weight-bold"> {{question.info.Answers.text}} </p>
+
+        <div class="row">
+            <div class="col-6">
+                <template v-for="option in options.left">
+                    <button
+                            class="option btn btn-block m-2 p-2"
+                            v-bind:class="{'disabled' : !option.active,'btn-outline-light-blue' : targetLeft && option.id === targetLeft.id, 'btn-outline-elegant' : !targetLeft || option.id !== targetLeft.id} "
+                            v-on:click="targetLeft = option">
+                        {{option.text}}
+                    </button>
+                </template>
+            </div>
+            <div class="col-6">
+                <template v-for="option in options.right">
+                    <button
+                            class="option btn btn-block m-2 p-2"
+                            v-bind:class="{'disabled' : !option.active,'btn-outline-light-blue' : targetRight && option.id === targetRight.id, 'btn-outline-elegant' : !targetRight || option.id !== targetRight.id} "
+                            v-on:click="targetRight = option">
+                        {{option.text}}
+                    </button>
+                </template>
+            </div>
+        </div>
+
+        <button class="btn btn-primary mt-3" v-bind:class="{'disabled' : !targetLeft || !targetRight}" v-on:click="match()"> Сопоставить </button>
+
+        <hr>
+
+        <div class="row align-items-center" v-for="item in answer">
+            <div class="col-5">
+                <button class="option btn btn-outline-elegant btn btn-block m-2 p-2 disabled">{{item.left.text}}</button>
+            </div>
+            <div class="col-5">
+                <button class="option btn btn-outline-elegant btn btn-block m-2 p-2 disabled">{{item.right.text}}</button>
+            </div>
+            <div class="col-2">
+                <button class="option btn btn-danger btn btn-block m-2 p-2" v-on:click="unmatch(item)">Удалить</button>
+            </div>
+
+        </div>
+
+        <nav class="navbar fixed-bottom navbar-dark indigo">
+            <a class="navbar-brand" href="#">Fixed bottom</a>
+        </nav>
+
+    </div>
+</script>
+
+<script src="question-type/match/script.js"></script>
